@@ -1,0 +1,18 @@
+import sys
+from pathlib import Path
+
+ROOT_DIR = Path(__file__).resolve().parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from backend.app import create_app
+
+app = create_app()
+
+if __name__ == "__main__":
+    print("==================================================")
+    print("Multi-Modal Fetal Risk Assessment System Starting")
+    print("Dashboard URL: http://127.0.0.1:5000")
+    print("Academic Research Prototype (Not for Clinical Use)")
+    print("==================================================")
+    app.run(host="0.0.0.0", port=5000, debug=True)

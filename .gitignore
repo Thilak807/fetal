@@ -32,3 +32,7 @@ backend/uploads/
 .vscode/
 .DS_Store
 Thumbs.db
+
+*.h5
+*.weights.h5
+*.dat

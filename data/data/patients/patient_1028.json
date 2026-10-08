@@ -1,0 +1,22 @@
+{
+  "patient_id": "PAT-1028",
+  "name": "Lauren Lopez",
+  "age": 21,
+  "maternal_age": 21,
+  "gestational_week": 33.1,
+  "gender": "Female",
+  "fetal_heart_rate": 143.7,
+  "estimated_fetal_weight_g": 2238,
+  "presentation": "Cephalic",
+  "scan_type": "Ultrasound",
+  "brain_scan_filename": "PAT-1028_brain.png",
+  "cardiac_signal_filename": "PAT-1028_fhr.csv",
+  "expected_demo_result": "Normal",
+  "expected_brain_analysis": "Normal Morphology",
+  "expected_cardiac_analysis": "Normal Reactive FHR",
+  "risk_score": 0.135,
+  "risk_percent": 13.5,
+  "risk_status": "Low Risk",
+  "notes": "Synthetic demo profile for Lauren Lopez. Generated for academic AI multi-modal evaluation.",
+  "data_tag": "SYNTHETIC DEMONSTRATION DATA \u2014 NOT FOR CLINICAL USE"
+}

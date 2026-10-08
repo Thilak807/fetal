@@ -17,8 +17,9 @@ class Config:
     SAVED_MODELS_DIR = BASE_DIR / "backend" / "saved_models"
     
     # Database
+    db_path = (BASE_DIR / "fetal_health.db").resolve().as_posix()
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        "DATABASE_URL", f"sqlite:///{BASE_DIR / 'fetal_health.db'}"
+        "DATABASE_URL", f"sqlite:///{db_path}"
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     

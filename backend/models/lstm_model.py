@@ -63,19 +63,22 @@ class FetalCardiacLSTM(nn.Module):
         Returns:
             f_cardiac: Tensor of shape (B, feature_dim)
         """
-        # LSTM outputs: (B, seq_len, lstm_output_dim)
-        out, (h_n, c_n) = self.lstm(x)
-
-        # Temporal Attention weighting: (B, seq_len, 1)
-        att_weights = self.attention(out)
-        att_weights = F.softmax(att_weights, dim=1)
-
-        # Context vector: (B, lstm_output_dim)
-        context = torch.sum(out * att_weights, dim=1)
-
-        # Cardiac feature vector F_cardiac: (B, feature_dim)
-        f_cardiac = self.feature_projector(context)
+        f_cardiac, _ = self.extract_features_with_attention(x)
         return f_cardiac
+
+    def extract_features_with_attention(self, x):
+        """
+        Extracts cardiac feature vector along with temporal attention weights for explainability.
+        Returns:
+            f_cardiac: Tensor (B, feature_dim)
+            att_weights: Tensor (B, seq_len)
+        """
+        out, (h_n, c_n) = self.lstm(x)
+        att_logits = self.attention(out)
+        att_weights = F.softmax(att_logits, dim=1)
+        context = torch.sum(out * att_weights, dim=1)
+        f_cardiac = self.feature_projector(context)
+        return f_cardiac, att_weights.squeeze(-1)
 
     def forward(self, x):
         """Standard feedforward returning class logits."""

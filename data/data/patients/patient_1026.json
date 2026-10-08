@@ -1,0 +1,22 @@
+{
+  "patient_id": "PAT-1026",
+  "name": "Rachel King",
+  "age": 28,
+  "maternal_age": 28,
+  "gestational_week": 26.5,
+  "gender": "Female",
+  "fetal_heart_rate": 139.9,
+  "estimated_fetal_weight_g": 1000,
+  "presentation": "Cephalic",
+  "scan_type": "Ultrasound",
+  "brain_scan_filename": "PAT-1026_brain.png",
+  "cardiac_signal_filename": "PAT-1026_fhr.csv",
+  "expected_demo_result": "Normal",
+  "expected_brain_analysis": "Normal Morphology",
+  "expected_cardiac_analysis": "Normal Reactive FHR",
+  "risk_score": 0.085,
+  "risk_percent": 8.5,
+  "risk_status": "Low Risk",
+  "notes": "Synthetic demo profile for Rachel King. Generated for academic AI multi-modal evaluation.",
+  "data_tag": "SYNTHETIC DEMONSTRATION DATA \u2014 NOT FOR CLINICAL USE"
+}

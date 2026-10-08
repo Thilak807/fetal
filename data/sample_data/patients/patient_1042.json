@@ -1,0 +1,22 @@
+{
+  "patient_id": "PAT-1042",
+  "name": "Courtney Campbell",
+  "age": 35,
+  "maternal_age": 35,
+  "gestational_week": 31.3,
+  "gender": "Female",
+  "fetal_heart_rate": 155.4,
+  "estimated_fetal_weight_g": 1889,
+  "presentation": "Cephalic",
+  "scan_type": "Ultrasound",
+  "brain_scan_filename": "PAT-1042_brain.png",
+  "cardiac_signal_filename": "PAT-1042_fhr.csv",
+  "expected_demo_result": "Suspect",
+  "expected_brain_analysis": "Mild Ventricle Asymmetry / Variation",
+  "expected_cardiac_analysis": "Reduced Variability / Tachycardia",
+  "risk_score": 0.485,
+  "risk_percent": 48.5,
+  "risk_status": "Requires Review",
+  "notes": "Synthetic demo profile for Courtney Campbell. Generated for academic AI multi-modal evaluation.",
+  "data_tag": "SYNTHETIC DEMONSTRATION DATA \u2014 NOT FOR CLINICAL USE"
+}

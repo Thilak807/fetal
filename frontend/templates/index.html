@@ -3,44 +3,111 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Multi-Modal Fetal Risk Assessment | AI Research Workstation</title>
+  <title>HERA | Multi-Modal Fetal Intelligence & Surveillance Platform</title>
   <link rel="stylesheet" href="/static/css/style.css">
   <!-- Chart.js for high-performance signal visualization -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
+  <!-- ========================================================= -->
+  <!-- MANDATORY CLINICAL AUTHENTICATION / LOGIN PORTAL -->
+  <!-- ========================================================= -->
+  <div id="login-modal" class="login-modal-overlay">
+    <div class="login-card">
+      <div class="login-badge-header">
+        <span class="pulse-ring"></span> SECURE CLINICAL AI ACCESS
+      </div>
+
+      <div class="login-brand-group">
+        <div class="login-logo-box">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#e06d64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            <path d="M3.5 12h3l2-4 3 8 2-5 1.5 2 2-1h3.5" stroke="#132742" stroke-width="1.8"></path>
+          </svg>
+        </div>
+        <div>
+          <h2>HERA <span style="color:var(--coral-main);">Fetal Intelligence</span></h2>
+          <p>Multi-Modal Diagnostic Platform &bull; Obstetric AI Surveillance</p>
+        </div>
+      </div>
+
+      <form id="login-form" onsubmit="event.preventDefault(); handleClinicalLogin();">
+        <div class="login-field-group">
+          <label>CLINICAL ROLE / PROFILE</label>
+          <div class="login-input-wrap">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <select id="login-profile-select" class="login-select" onchange="updateLoginPreset(this.value)">
+              <option value="researcher">Clinical Researcher (Dr. Elena Rostova - Fetal AI Studio)</option>
+              <option value="perinatologist">Lead Perinatologist (Dr. Sarah Jenkins - Maternal-Fetal Unit)</option>
+              <option value="obgyn">High-Risk Obstetrician (Dr. Michael Chen - Labor &amp; Delivery)</option>
+              <option value="administrator">Demo Administrator (Alex Morgan - HERA Operations)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="login-field-group">
+          <label>CLINICIAN EMAIL / ID</label>
+          <div class="login-input-wrap">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <input type="text" id="login-email" value="researcher@fetal-ai.org" required>
+          </div>
+        </div>
+
+        <div class="login-field-group">
+          <label>SECURITY CREDENTIAL / PASSCODE</label>
+          <div class="login-input-wrap">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" id="login-password" value="demo123" required>
+          </div>
+        </div>
+
+        <div class="login-actions">
+          <button type="submit" class="btn-login-submit">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+            Sign In to HERA Studio
+          </button>
+        </div>
+      </form>
+
+      <div class="login-footer-disclaimer">
+        <span>🔒 HIPAA / GDPR Synthetic Environment</span> &bull;
+        <span>All cases are synthetic profiles for AI research evaluation.</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Diagnostic Sequencer Modal Overlay -->
   <div id="diagnostic-modal" class="diagnostic-modal">
     <div class="diagnostic-panel">
       <div class="diagnostic-spinner"></div>
-      <h3 style="font-size:1.3rem;color:var(--navy-dark);margin-bottom:0.35rem;font-weight:800;">Dual-Modality AI Assessment Active</h3>
-      <p style="font-size:0.84rem;color:var(--navy-muted);">Analyzing Fetal Neuroimaging &amp; Cardiotocography Dynamics...</p>
+      <h3 style="font-size:1.3rem;color:var(--navy-dark);margin-bottom:0.35rem;font-weight:800;">Multi-Modal AI Pipeline Running</h3>
+      <p style="font-size:0.84rem;color:var(--navy-muted);">Executing Tri-Modal Neural Network Feature Fusion &amp; XAI...</p>
 
       <ul class="diagnostic-steps">
         <li id="diag-step-1" class="diagnostic-step">
           <div class="step-icon">1</div>
-          <span>Cranial Preprocessing &amp; ROI Segmentation (Otsu &amp; Intensity Clipping)</span>
+          <span>Cranial Preprocessing &amp; Otsu ROI Masking</span>
         </li>
         <li id="diag-step-2" class="diagnostic-step">
           <div class="step-icon">2</div>
-          <span>Deformable Brain Atlas Elastic B-Spline Registration</span>
+          <span>Deformable Brain Atlas B-Spline Registration</span>
         </li>
         <li id="diag-step-3" class="diagnostic-step">
           <div class="step-icon">3</div>
-          <span>Brain CNN Spatial Latent Extraction (F_brain &isin; &reals;<sup>128</sup>)</span>
+          <span>Brain CNN Spatial Feature &amp; Grad-CAM Saliency (F_brain &isin; &reals;<sup>128</sup>)</span>
         </li>
         <li id="diag-step-4" class="diagnostic-step">
           <div class="step-icon">4</div>
-          <span>CTG Signal Conditioning &amp; LSTM Temporal Modeling (F_cardiac &isin; &reals;<sup>128</sup>)</span>
+          <span>Cardiac LSTM Temporal Attention Modeling (F_cardiac &isin; &reals;<sup>128</sup>)</span>
         </li>
         <li id="diag-step-5" class="diagnostic-step">
           <div class="step-icon">5</div>
-          <span>Feature Concatenation &amp; Gated Modality Self-Attention Fusion</span>
+          <span>Tri-Modal Gated Modality Self-Attention Fusion</span>
         </li>
         <li id="diag-step-6" class="diagnostic-step">
           <div class="step-icon">6</div>
-          <span>Multi-Layer Risk Assessment &amp; Clinical Scoring</span>
+          <span>Synthesizing Multi-Layer Risk &amp; Clinical PDF Artifact</span>
         </li>
       </ul>
 
@@ -54,40 +121,63 @@
   <!-- TOP NAVBAR -->
   <header class="app-header">
     <div class="header-left">
-      <div class="header-logo-icon">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#d9534f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="header-logo-icon" id="nav-brand-logo" style="cursor:pointer;" title="Go to Platform Home">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#e06d64" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
           <path d="M3.5 12h3l2-4 3 8 2-5 1.5 2 2-1h3.5" stroke="#132742" stroke-width="1.8"></path>
         </svg>
       </div>
-      <div class="header-titles">
-        <h1>Multi-Modal <span>Fetal Risk Assessment</span></h1>
-        <p>Analysis of Cardiac Signals with Deformable Brain Atlas Mapping Using CNN and LSTM</p>
+      <div class="header-titles" id="nav-brand-text" style="cursor:pointer;" title="Go to Platform Home">
+        <h1>HERA <span>Fetal Intelligence</span></h1>
+        <p>Multi-Modal Fetal Risk Assessment &bull; Deformable Atlas CNN &bull; Cardiac LSTM &bull; Live CTG</p>
       </div>
     </div>
     
     <div class="header-right">
-      <div class="pill-academic">ACADEMIC RESEARCH PROTOTYPE &bull; NOT FOR CLINICAL USE</div>
-      <div class="pill-status">
-        <span class="status-dot-green"></span>
-        Dual-Modality Active
+      <!-- Notifications Bell with Red Dot -->
+      <div class="header-icon-wrap" style="position:relative;">
+        <button class="header-icon-btn" id="btn-notifications" title="System Notifications">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="bell-badge-dot"></span>
+        </button>
       </div>
-      <button class="header-icon-btn" id="btn-quick-demo" title="Load Demo Data">
-        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="3"></circle>
-          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"></path>
-        </svg>
-      </button>
-      <div class="header-user-profile">
+
+      <!-- User Profile Dropdown Pill -->
+      <div class="header-user-profile" id="user-profile-menu-toggle" style="cursor:pointer;" onclick="toggleUserDropdown()">
         <div class="user-avatar-circle">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
         </div>
         <div class="user-info-text">
-          <div class="user-name">Research User</div>
-          <div class="user-dept">Fetal AI Lab</div>
+          <div class="user-name" id="nav-user-name">Clinical Researcher</div>
+          <div class="user-dept" id="nav-user-dept">Fetal AI Studio</div>
+        </div>
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" style="color:var(--navy-muted);margin-left:0.25rem;">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+
+        <!-- Dropdown Menu -->
+        <div id="user-dropdown-menu" class="user-dropdown-panel" style="display:none;">
+          <div class="user-dropdown-header">
+            <strong id="dropdown-user-name">Dr. Elena Rostova</strong>
+            <span id="dropdown-user-role">Fetal AI Researcher</span>
+          </div>
+          <div class="user-dropdown-divider"></div>
+          <a class="dropdown-item" onclick="switchTab('tab-workstation'); closeUserDropdown();">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Clinician Workstation
+          </a>
+          
+          <div class="user-dropdown-divider"></div>
+          <a class="dropdown-item text-danger" onclick="handleLogout()">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign Out / Switch Session
+          </a>
         </div>
       </div>
     </div>
@@ -96,24 +186,47 @@
   <!-- APP LAYOUT -->
   <div class="app-layout">
     
-    <!-- LEFT SIDEBAR -->
+    <!-- LEFT SIDEBAR NAVIGATION -->
     <aside class="app-sidebar">
       <div class="sidebar-nav">
-        <button class="sidebar-btn active" data-tab="tab-workstation">
+        <button class="sidebar-btn active" data-tab="tab-home">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <rect x="3" y="3" width="7" height="7"></rect>
-            <rect x="14" y="3" width="7" height="7"></rect>
-            <rect x="14" y="14" width="7" height="7"></rect>
-            <rect x="3" y="14" width="7" height="7"></rect>
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
           </svg>
-          Dual-Modality Workstation
+          Platform Home
+        </button>
+        <button class="sidebar-btn" data-tab="tab-workstation">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/>
+            <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/>
+            <circle cx="20" cy="10" r="2"/>
+          </svg>
+          Clinician Workstation
+        </button>
+        <button class="sidebar-btn" data-tab="tab-streaming">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="10 8 16 12 10 16 10 8"></polygon>
+          </svg>
+          Live CTG Streaming
+        </button>
+        
+        <button class="sidebar-btn" data-tab="tab-longitudinal">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+          </svg>
+          Growth Tracker &amp; Timeline
         </button>
         <button class="sidebar-btn" data-tab="tab-history">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
           </svg>
-          Clinical Assessment History
+          History &amp; PDF Audit
         </button>
         <button class="sidebar-btn" data-tab="tab-eval">
           <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -121,517 +234,648 @@
             <line x1="12" y1="20" x2="12" y2="4"></line>
             <line x1="6" y1="20" x2="6" y2="14"></line>
           </svg>
-          Model Performance &amp; Evaluation
+          Model Performance
         </button>
       </div>
 
-      <!-- Sidebar Footer Artwork -->
-      <div class="sidebar-footer-artwork">
-        <div class="silhouette-container">
-          <svg width="150" height="170" viewBox="0 0 150 170" fill="none">
-            <!-- Glowing Silhouette of Pregnant Mother -->
-            <path d="M75 25 C82 25 88 31 88 38 C88 45 82 51 75 51 C68 51 62 45 62 38 C62 31 68 25 75 25 Z" fill="#e06d64" opacity="0.35"/>
-            <path d="M70 52 C55 58 45 75 45 95 C45 115 50 135 60 155 C70 160 85 160 95 155 C90 140 85 120 85 105 C85 85 98 75 92 65 C88 56 78 52 70 52 Z" fill="url(#grad-mother)" opacity="0.65"/>
-            <!-- Womb Glow & Child Profile -->
-            <ellipse cx="68" cy="108" rx="22" ry="28" fill="#ffe3dd" opacity="0.45" filter="blur(6px)"/>
-            <path d="M64 98 C68 95 73 98 74 103 C75 108 72 114 66 116 C62 118 58 114 59 108 C60 102 62 99 64 98 Z" fill="#e06d64" opacity="0.8"/>
-            <!-- Constellation dots -->
-            <circle cx="35" cy="80" r="1.5" fill="#e06d64" opacity="0.7"/>
-            <circle cx="28" cy="95" r="1" fill="#e06d64" opacity="0.4"/>
-            <circle cx="32" cy="115" r="1.5" fill="#e06d64" opacity="0.6"/>
-            <circle cx="40" cy="135" r="1" fill="#e06d64" opacity="0.4"/>
-            <circle cx="105" cy="85" r="1" fill="#e06d64" opacity="0.5"/>
-            <circle cx="112" cy="105" r="1.5" fill="#e06d64" opacity="0.7"/>
-            <defs>
-              <linearGradient id="grad-mother" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#e06d64"/>
-                <stop offset="100%" stop-color="#fce8e4"/>
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-        <div class="silhouette-tagline">
-          AI for
-          <span class="tagline-accent">Healthier<br>Tomorrows</span>
-          <div class="tagline-bar"></div>
-        </div>
+      <!-- Bottom Sidebar Card: AI for Safer Beginnings (Image Embedded) -->
+      <div class="sidebar-mother-art-container">
+        <img src="/static/images/sidebar_mother.png" alt="AI for Safer Beginnings" class="sidebar-mother-full-img">
       </div>
     </aside>
 
     <!-- MAIN CONTENT -->
     <main class="app-main-content">
 
-      <!-- TAB 1: DUAL-MODALITY WORKSTATION -->
-      <div id="tab-workstation" class="tab-pane active">
-
-        <!-- HERO BANNER (Hera Warm Maternal Clinical Style) -->
-        <section class="hero-banner">
-          <div class="hero-banner-left">
-            <div class="hero-welcome-badge">Welcome to Hera Clinical AI</div>
-            <h2 class="hero-title">
-              Dual-Modality <span class="title-italic">Fetal Health</span> &amp; Intelligence
-            </h2>
-            <p class="hero-description">
-              Advanced AI research workstation for multi-modal fetal risk evaluation. Combining non-rigid deformable brain atlas mapping with continuous cardiotocographic sequence analysis.
-            </p>
-            <div class="hero-cta-row">
-              <button id="btn-hero-quick-demo" class="btn-coral-pill">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                Launch Clinical Demo
-              </button>
-              <button id="btn-hero-scroll-input" class="btn-white-pill">
-                Upload Scan &amp; Signal &darr;
-              </button>
+      <!-- ========================================================= -->
+      <!-- TAB 1: STUNNING FRONT LANDING PAGE (HERO & PORTALS) -->
+      <!-- ========================================================= -->
+      <div id="tab-home" class="tab-pane active">
+        
+        <!-- Hero Section -->
+        <section class="landing-hero-container">
+          <div class="landing-hero-content">
+            <div class="hero-welcome-badge">
+              NEXT-GENERATION FETAL DIAGNOSTIC INTELLIGENCE
             </div>
-            <div class="hero-feature-badges">
-              <div class="hero-badge-item">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a5 5 0 0 0-5 5v1a5 5 0 0 0-3 4.5A4.5 4.5 0 0 0 8 17h8a4.5 4.5 0 0 0 4-4.5A5 5 0 0 0 17 8V7a5 5 0 0 0-5-5z"/></svg>
-                <div class="hero-badge-text">Deformable<br>Brain Atlas</div>
-              </div>
-              <div class="hero-badge-item">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                <div class="hero-badge-text">Continuous<br>4 Hz FHR</div>
-              </div>
-              <div class="hero-badge-item">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                <div class="hero-badge-text">Multi-Modal<br>AI Fusion</div>
-              </div>
+            <h1 class="landing-hero-title">
+              Precision AI Surveillance for <span class="text-coral-highlight">Fetal Well-Being</span>
+            </h1>
+            <p class="landing-hero-desc">
+              A comprehensive multi-modal deep learning platform uniting <strong>deformable brain atlas mapping</strong>, 
+              <strong>cardiac time-series LSTM dynamics</strong>, and <strong>maternal clinical biomarkers</strong> for holistic risk stratification.
+            </p>
+            <div class="landing-cta-group">
+              <button class="btn-coral-pill btn-large" onclick="switchTab('tab-workstation')">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Enter Clinician Workstation
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+              <button class="btn-white-pill btn-large" onclick="switchTab('tab-streaming')">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                Launch Bedside CTG Monitor
+              </button>
             </div>
           </div>
 
-          <!-- Hero Right Visual: Warm Maternal & Womb Graphic with Pulsing Heartbeat -->
-          <div class="hero-visual-right">
-            <div class="fetus-illustration-box">
-              <svg width="170" height="135" viewBox="0 0 170 135" fill="none">
-                <!-- Outer Womb Bubble Glow -->
-                <ellipse cx="85" cy="67" rx="75" ry="58" fill="url(#womb-grad)" stroke="#e06d64" stroke-width="1.5" opacity="0.4"/>
-                <!-- Fetus Vector Silhouette -->
-                <path d="M92 38 C98 38 104 44 104 52 C104 60 97 66 89 66 C84 66 80 62 80 58 C80 54 84 50 88 50 C89 45 88 41 84 39 Z" fill="#e06d64" opacity="0.85"/>
-                <path d="M89 66 C98 70 102 80 100 90 C98 98 90 104 80 104 C70 104 64 96 66 88 C68 80 76 74 84 72 Z" fill="#d9534f" opacity="0.65"/>
-                <path d="M78 86 C74 90 68 92 65 88 C62 84 65 78 70 78 Z" fill="#faeae5" opacity="0.7"/>
-                <!-- Pulsing Heartbeat Wave crossing womb with active ECG animation -->
-                <path class="ecg-pulse-animated" d="M10 67 L50 67 L58 52 L66 82 L74 48 L82 78 L88 67 L160 67" stroke="#e06d64" stroke-width="2.5" stroke-linecap="round" opacity="0.95"/>
-                <defs>
-                  <radialGradient id="womb-grad" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="#faeae5" stop-opacity="0.9"/>
-                    <stop offset="100%" stop-color="#e06d64" stop-opacity="0.15"/>
-                  </radialGradient>
-                </defs>
+          <div class="landing-hero-graphic">
+            <!-- Top quote on right -->
+            <div class="hero-quote-box">
+              <div class="quote-text">EARLIER INSIGHTS. HEALTHIER TOMORROWS.</div>
+              <div class="quote-underline"></div>
+            </div>
+
+            <div class="hero-illustration-stage">
+              <!-- Floating MRI Scan Card -->
+              <div class="floating-badge badge-mri">
+                <img src="/static/images/step1_preprocessed.png" alt="Brain Scan" class="badge-mri-thumb-img">
+              </div>
+
+              <!-- Floating ECG Wave Badge -->
+              <div class="floating-badge badge-ecg">
+                <svg width="60" height="24" viewBox="0 0 60 24" fill="none">
+                  <path d="M0 12h15l4-8 6 16 4-10 3 4h28" stroke="#e06d64" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+
+              <!-- Floating Risk Assessment Badge -->
+              <div class="floating-badge badge-risk">
+                <div style="font-size:0.68rem; color:#64748b; font-weight:700;">AI Risk Assessment</div>
+                <div style="display:flex; align-items:center; gap:0.35rem; color:#059669; font-weight:800; font-size:0.75rem; margin-top:2px;">
+                  <span style="width:6px; height:6px; border-radius:50%; background:#10b981;"></span> Low Risk
+                </div>
+              </div>
+
+              <!-- Embedded 3D Fetus in Womb Graphic Asset -->
+              <div class="fetus-image-wrapper">
+                <img src="/static/images/hero_fetus.png" alt="Fetal Well-Being AI Surveillance" class="hero-fetus-img">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4 Quick Feature Portal Cards -->
+        <div class="portal-quick-row">
+          
+
+
+          <!-- Portal 2: 4 Hz FHR -->
+          <div class="quick-feature-card" onclick="switchTab('tab-streaming')">
+            <div class="quick-icon-circle icon-blue-soft">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
               </svg>
             </div>
-            <div class="hero-slogan-box">
-              <div class="hero-slogan-title">Small<br>Signals</div>
-              <div class="hero-slogan-sub">Brighter<br>Futures</div>
-              <div class="hero-slogan-bar"></div>
+            <div class="quick-card-info">
+              <div class="quick-card-title">4 Hz FHR <span class="quick-arrow">&gt;</span></div>
+              <div class="quick-card-sub">PHYSIONET CTU-CHB</div>
             </div>
           </div>
-        </section>
 
-        <!-- GIANT WATERMARK METRICS STRIP (Directly from Hera Photo) -->
-        <section class="watermark-metrics-section">
-          <div class="watermark-metrics-grid">
-            
-            <div class="watermark-metric-card" data-target="99.1" data-suffix="%">
-              <div class="watermark-giant-num">50</div>
-              <div class="watermark-metric-content">
-                <div class="watermark-metric-value" id="stat-counter-1">99.1%</div>
-                <div class="watermark-metric-label">B-Spline Atlas Registration Accuracy</div>
-              </div>
+          <!-- Portal 3: Grad-CAM XAI -->
+          <div class="quick-feature-card" onclick="switchTab('tab-workstation')">
+            <div class="quick-icon-circle icon-purple-soft">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2.2">
+                <path d="M12 2a5 5 0 0 0-5 5v1a5 5 0 0 0-3 4.5A4.5 4.5 0 0 0 8 17h8a4.5 4.5 0 0 0 4-4.5A5 5 0 0 0 17 8V7a5 5 0 0 0-5-5z"/>
+              </svg>
             </div>
-
-            <div class="watermark-metric-card" data-target="4" data-suffix=" Hz">
-              <div class="watermark-giant-num">2.7K</div>
-              <div class="watermark-metric-content">
-                <div class="watermark-metric-value" id="stat-counter-2">4 Hz</div>
-                <div class="watermark-metric-label">PhysioNet CTU-CHB CTG Sampling Rate</div>
-              </div>
+            <div class="quick-card-info">
+              <div class="quick-card-title">Grad-CAM XAI <span class="quick-arrow">&gt;</span></div>
+              <div class="quick-card-sub">INTRACRANIAL SALIENCY</div>
             </div>
-
-            <div class="watermark-metric-card" data-target="128" data-suffix="-D">
-              <div class="watermark-giant-num">83%</div>
-              <div class="watermark-metric-content">
-                <div class="watermark-metric-value" id="stat-counter-3">128-D</div>
-                <div class="watermark-metric-label">Deep Latent Vectors (CNN &amp; LSTM)</div>
-              </div>
-            </div>
-
-            <div class="watermark-metric-card" data-target="3" data-suffix=" Tiers">
-              <div class="watermark-giant-num">14</div>
-              <div class="watermark-metric-content">
-                <div class="watermark-metric-value" id="stat-counter-4">3 Tiers</div>
-                <div class="watermark-metric-label">Clinical Risk Categories (FIGO Standard)</div>
-              </div>
-            </div>
-
           </div>
-        </section>
 
-        <!-- THE HERA EXPERIENCE INTRO SPLIT -->
-        <section class="section-intro-split">
-          <div class="experience-title-box">
-            <h3>Multi-Modal Fetal Risk</h3>
-            <span>Assessment &amp; Intelligence</span>
+          <!-- Portal 4: PDF Export -->
+          <div class="quick-feature-card" onclick="switchTab('tab-history')">
+            <div class="quick-icon-circle icon-green-soft">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+              </svg>
+            </div>
+            <div class="quick-card-info">
+              <div class="quick-card-title">PDF Export <span class="quick-arrow">&gt;</span></div>
+              <div class="quick-card-sub">1-CLICK CLINICAL REPORTS</div>
+            </div>
           </div>
-          <div class="experience-desc-box">
-            <p>
-              Empowering obstetricians, fetal specialists, and perinatal researchers with continuous cardiotocographic signals and deformable brain atlas mapping. Built upon the IEEE research architecture to deliver early, interpretable clinical indicators without invasive procedures.
-            </p>
-          </div>
-        </section>
 
-        <!-- HERA 4-FEATURE CARDS GRID (Directly from Hera Photo) -->
-        <section class="hera-features-grid">
+        </div>
+
+        <!-- Bottom Row: Pipeline Overview + System Status -->
+        <div class="landing-bottom-grid">
           
-          <!-- Card 1 (Peach Highlight Card with Percentage / Fusion Icon) -->
-          <div class="hera-feature-card card-peach-highlight" id="card-feature-fusion">
-            <div>
-              <div class="hera-card-badge-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v18M3 12h18"></path></svg>
+          <!-- Left: Model Pipeline Overview -->
+          <div class="landing-card-white pipeline-overview-card">
+            <h3 class="landing-card-title">Model Pipeline Overview</h3>
+            <div class="pipeline-flow-container">
+              
+              <div class="pipeline-node-box node-pink">
+                <div class="node-icon-wrap">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                </div>
+                <div>
+                  <strong>Multi-Modal Input</strong>
+                  <span>MRI | CTG | Clinical</span>
+                </div>
               </div>
-              <div class="hera-card-content">
-                <div class="hera-card-tag">Cross-Attention Head</div>
-                <h4>Zero Modality Loss</h4>
-                <p>Gated cross-attention dynamically balances neuroimaging biomarkers and cardiac time-series dynamics for robust synthesis.</p>
+
+              <div class="pipeline-arrow">&rarr;</div>
+
+              <div class="pipeline-node-box node-blue">
+                <div class="node-icon-wrap">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                </div>
+                <div>
+                  <strong>Deep Learning Models</strong>
+                  <span>Deformable CNN + LSTM</span>
+                </div>
               </div>
-            </div>
-            <div class="hera-card-footer">
-              <span style="font-size:0.76rem;font-weight:700;color:var(--coral-main);">256-D Joint Vector</span>
-              <div class="hera-card-action-circle">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+
+              <div class="pipeline-arrow">&rarr;</div>
+
+              <div class="pipeline-node-box node-green">
+                <div class="node-icon-wrap">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </div>
+                <div>
+                  <strong>Risk Stratification</strong>
+                  <span>Explainable AI (Grad-CAM)</span>
+                </div>
               </div>
+
+              <div class="pipeline-arrow">&rarr;</div>
+
+              <div class="pipeline-node-box node-purple">
+                <div class="node-icon-wrap">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <div>
+                  <strong>Clinical Insights</strong>
+                  <span>PDF Reports</span>
+                </div>
+              </div>
+
             </div>
           </div>
 
-          <!-- Card 2: Deformable Brain Atlas -->
-          <div class="hera-feature-card" id="card-feature-brain">
-            <div>
-              <div class="hera-card-badge-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a5 5 0 0 0-5 5v1a5 5 0 0 0-3 4.5A4.5 4.5 0 0 0 8 17h8a4.5 4.5 0 0 0 4-4.5A5 5 0 0 0 17 8V7a5 5 0 0 0-5-5z"></path></svg>
-              </div>
-              <div class="hera-card-content">
-                <div class="hera-card-tag">Modality 1 Pipeline</div>
-                <h4>Deformable Brain Atlas</h4>
-                <p>Non-rigid elastic B-spline mapping projects cranial scans onto canonical reference templates to remove anatomical variation.</p>
-              </div>
-            </div>
-            <div class="hera-card-footer">
-              <span style="font-size:0.76rem;font-weight:700;color:var(--navy-muted);">128-D Spatial Latent</span>
-              <div class="hera-card-action-circle">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 3: Cardiac Time-Series LSTM -->
-          <div class="hera-feature-card" id="card-feature-cardiac">
-            <div>
-              <div class="hera-card-badge-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
-              </div>
-              <div class="hera-card-content">
-                <div class="hera-card-tag">Modality 2 Pipeline</div>
-                <h4>Cardiac Sequence LSTM</h4>
-                <p>Multi-layer recurrent modeling conditioned on 4 Hz FHR and uterine contractions to capture acute decelerations &amp; STV.</p>
-              </div>
-            </div>
-            <div class="hera-card-footer">
-              <span style="font-size:0.76rem;font-weight:700;color:var(--navy-muted);">128-D Temporal Latent</span>
-              <div class="hera-card-action-circle">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 4: Explainable Risk Scoring -->
-          <div class="hera-feature-card" id="card-feature-explain">
-            <div>
-              <div class="hera-card-badge-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><polyline points="9 12 11 14 15 10"></polyline></svg>
-              </div>
-              <div class="hera-card-content">
-                <div class="hera-card-tag">Clinical Stratification</div>
-                <h4>Explainable Risk Scoring</h4>
-                <p>Calibrated multi-class probability outputs coupled with dynamic modality attribution percentages and confidence metrics.</p>
-              </div>
-            </div>
-            <div class="hera-card-footer">
-              <span style="font-size:0.76rem;font-weight:700;color:var(--navy-muted);">Normal / Suspect / Path</span>
-              <div class="hera-card-action-circle">
-                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-              </div>
-            </div>
-          </div>
-
-        </section>
-
-        <!-- PATIENT DEMOGRAPHICS CARD -->
-        <section class="section-card">
-          <div class="card-header-flex">
-            <div class="card-title-group">
-              <div class="card-title-icon-box">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              </div>
-              <div>
-                <div class="card-main-title">Patient Demographics &amp; Gestational Parameters</div>
-                <div class="card-sub-title">Register a new patient or select from existing records</div>
-              </div>
+          <!-- Right: System Status -->
+          <div class="landing-card-white system-status-card">
+            <div class="status-card-header">
+              <h3 class="landing-card-title" style="margin:0;">System Status</h3>
+              <span class="live-pill-tag"><span class="status-dot-green"></span> Live</span>
             </div>
             
-            <div class="patient-status-pill-box" id="active-patient-box">
-              <svg width="18" height="18" fill="none" stroke="#e06d64" stroke-width="2" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-              <div>
-                <div class="pill-title" id="active-patient-name-display">No Patient Selected</div>
-                <div class="pill-desc" id="active-patient-sub-display">Please register or select a patient</div>
+            <div class="system-status-list">
+              <div class="status-item-row">
+                <div class="status-label-group">
+                  <svg width="16" height="16" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  <span>CTG Streaming</span>
+                </div>
+                <strong class="status-val-green">Online</strong>
+              </div>
+
+              <div class="status-item-row">
+                <div class="status-label-group">
+                  <svg width="16" height="16" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                </div>
+                <strong class="status-val-green">Ready</strong>
+              </div>
+
+              <div class="status-item-row">
+                <div class="status-label-group">
+                  <svg width="16" height="16" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                </div>
+                <strong class="status-val-green">Connected</strong>
+              </div>
+
+              <div class="status-item-row">
+                <div class="status-label-group">
+                  <svg width="16" height="16" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <strong class="status-val-green">Active</strong>
               </div>
             </div>
           </div>
 
-          <div class="patient-form-grid">
-            <div class="field-group">
-              <label>SELECT EXISTING PATIENT</label>
-              <select id="select-patient" class="select-custom">
-                <option value="">-- Select Registered Patient --</option>
+        </div>
+
+      </div>
+
+
+      <!-- ========================================================= -->
+      <!-- TAB 2: CLINICIAN WORKSTATION (DUAL/TRI-MODAL & GRAD-CAM) -->
+      <!-- ========================================================= -->
+      <div id="tab-workstation" class="tab-pane" style="display:none;">
+
+        <!-- Top Workstation Banner with Right Quote and Banner Baby Image -->
+        <section class="workstation-banner-header">
+          <div class="workstation-banner-text">
+            <div class="ws-banner-subtitle">CLINICIAN WORKSTATION</div>
+            <h1 class="ws-banner-title">Patient Intake &amp; <span class="text-coral-highlight">Case Selection</span></h1>
+            <p class="ws-banner-desc">Choose from 50 synthetic patient profiles or register custom records</p>
+          </div>
+          <div class="workstation-banner-decor">
+            <div class="banner-quote-badge">
+              <em>&ldquo;AI-assisted care for every heartbeat that matters.&rdquo;</em>
+              <div class="quote-underline"></div>
+            </div>
+            <div class="banner-fetus-img-box">
+              <img src="/static/images/banner_fetus.png" alt="Fetal Care AI" class="banner-fetus-img">
+            </div>
+          </div>
+        </section>
+
+        <!-- SYNTHETIC  PATIENT PICKER BOX -->
+        <section class="section-card-demo-picker">
+          <div class="demo-picker-header-row">
+            <div class="demo-picker-title-left">
+              <span class="badge-tag-red">50 SYNTHETIC CASES</span>
+              <strong>Select Patient from Dataset (PAT-1001 to PAT-1050)</strong>
+            </div>
+            <span class="badge-tag-pink-warn">
+              NOT FOR CLINICAL USE
+            </span>
+          </div>
+
+          <div class="demo-picker-controls-row">
+            <div class="demo-select-wrap">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <select id="select-demo-patient" class="select-styled-large">
+                <option value="">Choose a Synthetic Patient (50 Available Cases)</option>
               </select>
             </div>
-
-            <div class="field-group">
-              <label>PATIENT CODE / ID</label>
-              <div class="input-with-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                <input type="text" id="input-pat-id" placeholder="PAT-2026-001">
-              </div>
-            </div>
-
-            <div class="field-group">
-              <label>PATIENT FULL NAME</label>
-              <div class="input-with-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <input type="text" id="input-pat-name" placeholder="Jane Doe">
-              </div>
-            </div>
-
-            <div class="field-group">
-              <label>AGE (years)</label>
-              <div class="input-with-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                <input type="number" id="input-pat-age" placeholder="Age (e.g. 28)" min="14" max="55">
-              </div>
-            </div>
-
-            <div class="field-group">
-              <label>GESTATIONAL WEEK (GW)</label>
-              <div class="input-with-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                <input type="number" id="input-pat-gw" placeholder="GW (e.g. 32)" step="0.1" min="12" max="44">
-              </div>
-            </div>
-
-            <button id="btn-register-patient" class="btn-register-cyan">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              Register Patient
+            <button id="btn-load-selected-demo" class="btn-coral-pill btn-load-patient">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+              Load Matched Patient Files &rarr;
             </button>
+          </div>
+
+          <!-- Matched Patient Summary Bar -->
+          <div id="demo-patient-inspector" class="patient-summary-horizontal-bar">
+            <div class="pat-bar-avatar">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div class="pat-bar-main">
+              <div class="pat-bar-name-row">
+                <strong id="insp-pat-id-name">PAT-1001 John Smith</strong>
+                <span class="pill-badge-green"><span class="status-dot-green"></span> SELECTED</span>
+              </div>
+            </div>
+
+            <div class="pat-bar-meta-item">
+              <div class="meta-label">📅 Gestational Week</div>
+              <strong id="insp-pat-gw">24 wks (Age: 21)</strong>
+            </div>
+
+            <div class="pat-bar-meta-item">
+              <div class="meta-label">⚖ Est. Fetal Weight</div>
+              <strong id="insp-pat-weight">550 g</strong>
+            </div>
+
+            <div class="pat-bar-meta-item">
+              <div class="meta-label">🗄 Matched Cardiac FHR</div>
+              <strong id="insp-cardiac-file" class="text-coral-file">PAT-1001_fhr.csv</strong>
+            </div>
+
+            <div class="pat-bar-meta-item">
+              <div class="meta-label">🖼 Presentation</div>
+              <strong id="insp-pat-pres">Transverse (MRI)</strong>
+            </div>
+
+            <div class="pat-bar-meta-item">
+              <div class="meta-label">🧠 Matched Brain Scan</div>
+              <strong id="insp-brain-file" class="text-purple-file">PAT-1001_brain.png</strong>
+            </div>
+
+            <div class="pat-bar-meta-item">
+              <div class="meta-label">📈 Expected Tier</div>
+              <span id="insp-expected-tier" class="risk-badge risk-normal">COHORT NC</span>
+            </div>
           </div>
         </section>
 
-        <!-- DUAL MODALITY GRID -->
+        <!-- DUAL MODALITY PIPELINE GRID (Matching Screenshot 3) -->
         <div class="dual-modality-grid">
 
           <!-- MODALITY 1: FETAL BRAIN IMAGING PIPELINE (Purple Theme) -->
-          <section class="modality-card-brain">
-            <div class="card-header-flex">
-              <div class="card-title-group">
-                <div class="card-title-icon-box icon-box-purple">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a5 5 0 0 0-5 5v1a5 5 0 0 0-3 4.5A4.5 4.5 0 0 0 8 17h8a4.5 4.5 0 0 0 4-4.5A5 5 0 0 0 17 8V7a5 5 0 0 0-5-5z"/></svg>
+          <section class="modality-card-purple">
+            <div class="modality-card-header">
+              <div class="modality-title-group">
+                <div class="modality-icon-circle icon-purple-bg">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2"><path d="M12 2a5 5 0 0 0-5 5v1a5 5 0 0 0-3 4.5A4.5 4.5 0 0 0 8 17h8a4.5 4.5 0 0 0 4-4.5A5 5 0 0 0 17 8V7a5 5 0 0 0-5-5z"/></svg>
                 </div>
                 <div>
-                  <div class="card-main-title">Modality 1: Fetal Brain Imaging Pipeline</div>
-                  <div class="card-sub-title">MRI/Ultrasound analysis with deformable atlas mapping</div>
+                  <div class="modality-badge-pill pill-purple-tag">Modality 1</div>
+                  <h3 class="modality-main-title">Fetal Brain Imaging Pipeline</h3>
+                  <div class="modality-sub-title">MRI / Ultrasound with B-Spline Atlas &amp; Grad-CAM XAI</div>
                 </div>
               </div>
-              <div class="status-pill-purple" id="brain-status-pill">
-                <span class="status-dot-purple"></span>
-                <span id="brain-status">Awaiting Brain Scan</span>
+              <div class="modality-status-badge badge-green-pill">
+                <span class="status-dot-green"></span>
+                <div>
+                  <strong>Brain Features Ready</strong>
+                  <span>Model Loaded &check;</span>
+                </div>
               </div>
             </div>
 
-            <!-- Upload Dropzone (Brain) -->
-            <div id="brain-dropzone" class="upload-dropzone-box dropzone-brain">
-              <input type="file" id="brain-file-input" accept=".png,.jpg,.jpeg,.bmp,.tif,.tiff,.nii,.gz" style="display:none;">
-              <div class="dropzone-icon-center">
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              </div>
-              <div class="dropzone-title">Select or Drop Fetal Brain Scan Here</div>
-              <div class="dropzone-sub">Supports MRI or Ultrasound slices (PNG, JPG, TIFF, NIfTI)</div>
-              <button class="btn-choose-file btn-choose-purple" onclick="document.getElementById('brain-file-input').click();">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                Choose File
-              </button>
-            </div>
-
-            <!-- Result Viewer for Brain Scan (Hidden until loaded) -->
-            <div id="brain-result-viewer" class="viewer-result-box">
-              <div class="image-viewer-grid">
-                <div class="image-box" id="box-brain-prep">
-                  <img id="img-brain-preprocessed" src="" alt="Preprocessed ROI">
-                  <div class="image-label">1. Preprocessed ROI</div>
+            <!-- Upload & Brain Neural Artwork Row -->
+            <div class="modality-body-dual">
+              <!-- Upload Dropzone -->
+              <div id="brain-dropzone" class="dropzone-box dropzone-purple">
+                <input type="file" id="brain-file-input" accept=".png,.jpg,.jpeg,.bmp,.tif,.tiff,.nii,.gz" style="display:none;">
+                <div class="dropzone-icon-circle-purple">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9333ea" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                 </div>
-                <div class="image-box" id="box-brain-mapped">
-                  <img id="img-brain-mapped" src="" alt="Atlas-Mapped Scan">
-                  <div class="image-label">2. Deformable Atlas Mapped</div>
-                </div>
-                <div class="image-box" id="box-brain-deform">
-                  <img id="img-brain-deform" src="" alt="Displacement Field">
-                  <div class="image-label">3. Displacement Vector Field</div>
-                </div>
+                <strong>Drag &amp; Drop Fetal Brain Scan Here</strong>
+                <p>Supports MRI or Ultrasound slices (PNG, JPG, TIFF, NIFTI)</p>
+                <div id="brain-upload-name" class="uploaded-dataset-name">No brain dataset selected</div>
+                <button class="btn-choose-purple" onclick="document.getElementById('brain-file-input').click();">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  Choose File
+                </button>
               </div>
 
-              <!-- Metrics -->
-              <table class="metrics-table">
-                <tbody id="brain-metrics-body"></tbody>
-              </table>
-
-              <div style="margin-top:0.6rem;">
-                <label style="font-size:0.72rem;text-transform:uppercase;color:#94a3b8;font-weight:700;">Extracted CNN Latent Vector (F_brain &isin; &reals;<sup>128</sup>)</label>
-                <div id="brain-feature-vector" class="feature-box">Ready</div>
+              <!-- Fetus Neural Network Artwork Asset with 4 Feature Badges -->
+              <div class="brain-art-decor-container">
+                <div class="brain-art-img-box">
+                  <img src="/static/images/brain_neural_fetus.png" alt="Illuminated Fetal Brain" class="brain-neural-img">
+                </div>
+                <div class="brain-feature-tags-list">
+                  <span class="feat-tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Preprocessing</span>
+                  <span class="feat-tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg> Atlas Mapping</span>
+                  <span class="feat-tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg> Displacement Field</span>
+                  <span class="feat-tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Grad-CAM XAI</span>
+                </div>
               </div>
             </div>
 
-            <!-- 4 Feature Tags (Footer) -->
-            <div class="modality-feature-tags-grid">
-              <div class="feature-tag-chip">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                <div>
-                  <div class="chip-title">MRI / Ultrasound</div>
-                  <div class="chip-sub">Supported</div>
+            <!-- Pipeline Steps (Preview) 4 Thumbnails -->
+            <div class="pipeline-steps-preview-section">
+              <div class="steps-preview-title">Pipeline Steps (Preview)</div>
+              
+              <div class="pipeline-stepper-row">
+                <div class="step-num-node">1</div>
+                <div class="step-line-bar"></div>
+                <div class="step-num-node">2</div>
+                <div class="step-line-bar"></div>
+                <div class="step-num-node">3</div>
+                <div class="step-line-bar"></div>
+                <div class="step-num-node">4</div>
+              </div>
+
+              <div class="image-viewer-grid-4">
+                <div class="image-step-card" id="box-brain-prep">
+                  <div class="step-thumb-label">Preprocessed ROI</div>
+                  <div class="step-thumb-box">
+                    <img id="img-brain-preprocessed" src="/static/images/step1_preprocessed.png" alt="Preprocessed ROI">
+                  </div>
+                </div>
+
+                <div class="image-step-card" id="box-brain-mapped">
+                  <div class="step-thumb-label">Deformable Atlas Mapped</div>
+                  <div class="step-thumb-box">
+                    <img id="img-brain-mapped" src="/static/images/step2_atlas_mapped.png" alt="Atlas-Mapped">
+                  </div>
+                </div>
+
+                <div class="image-step-card" id="box-brain-deform">
+                  <div class="step-thumb-label">Displacement Vector Field</div>
+                  <div class="step-thumb-box">
+                    <img id="img-brain-deform" src="/static/images/step3_deformation_field.png" alt="Displacement Field">
+                  </div>
+                </div>
+
+                <div class="image-step-card" id="box-brain-gradcam">
+                  <div class="step-thumb-label text-purple-bold">Grad-CAM Saliency</div>
+                  <div class="step-thumb-box border-purple-glow">
+                    <img id="img-brain-gradcam" src="/static/images/step4_gradcam.png" alt="Grad-CAM Saliency">
+                  </div>
                 </div>
               </div>
-              <div class="feature-tag-chip">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-                <div>
-                  <div class="chip-title">Multiple Slices</div>
-                  <div class="chip-sub">Supported</div>
-                </div>
-              </div>
-              <div class="feature-tag-chip">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                <div>
-                  <div class="chip-title">Formats</div>
-                  <div class="chip-sub">PNG, JPG, TIFF, NIfTI</div>
-                </div>
-              </div>
-              <div class="feature-tag-chip">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-                <div>
-                  <div class="chip-title">Auto Preprocessing</div>
-                  <div class="chip-sub">Enabled</div>
-                </div>
-              </div>
+            </div>
+
+            <div class="modality-card-footer">
+              ✦ Multi-Resolution Elastic B-Spline &bull; Explainable AI for Safer Diagnoses
             </div>
           </section>
 
-          <!-- MODALITY 2: FETAL CARDIAC SIGNAL PIPELINE (Warm Coral Theme) -->
-          <section class="modality-card-cardiac">
-            <div class="card-header-flex">
-              <div class="card-title-group">
-                <div class="card-title-icon-box icon-box-cyan">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+
+          <!-- MODALITY 2: FETAL CARDIAC SIGNAL PIPELINE (Coral Theme) -->
+          <section class="modality-card-coral">
+            <div class="modality-card-header">
+              <div class="modality-title-group">
+                <div class="modality-icon-circle icon-coral-bg">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e06d64" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                 </div>
                 <div>
-                  <div class="card-main-title">Modality 2: Fetal Cardiac Signal Pipeline</div>
-                  <div class="card-sub-title">PhysioNet CTU-CHB time-series analysis</div>
+                  <div class="modality-badge-pill pill-coral-tag">Modality 2</div>
+                  <h3 class="modality-main-title">Fetal Cardiac Signal Pipeline</h3>
+                  <div class="modality-sub-title">PhysioNet CTU-CHB 4 Hz FHR &amp; Temporal Attention</div>
                 </div>
               </div>
-              <div class="status-pill-cyan" id="cardiac-status-pill">
-                <span class="status-dot-cyan"></span>
-                <span id="cardiac-status">Awaiting Cardiac Signal</span>
+              <div class="modality-status-badge badge-green-pill">
+                <span class="status-dot-green"></span>
+                <div>
+                  <strong>Cardiac Features Ready</strong>
+                  <span>Model Loaded &check;</span>
+                </div>
               </div>
             </div>
 
-            <!-- Upload Dropzone (Cardiac) -->
-            <div id="cardiac-dropzone" class="upload-dropzone-box dropzone-cardiac">
-              <input type="file" id="cardiac-file-input" accept=".csv,.dat,.txt" style="display:none;">
-              <div class="dropzone-icon-center">
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#e06d64" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-              </div>
-              <div class="dropzone-title">Select or Drop Cardiac Signal File Here</div>
-              <div class="dropzone-sub">Supports PhysioNet CTU-CHB time-series (.dat, .csv, .txt sampled at 4 Hz)</div>
-              <button class="btn-choose-file btn-choose-cyan" onclick="document.getElementById('cardiac-file-input').click();">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                Choose File
-              </button>
-            </div>
-
-            <!-- Result Viewer for Cardiac Signal (Hidden until loaded) -->
-            <div id="cardiac-result-viewer" class="viewer-result-box">
-              <div style="height: 140px; position: relative; margin-bottom: 0.75rem; background: #fff8f6; border-radius: 0.75rem; padding: 0.5rem; border: 1px solid rgba(224, 109, 100, 0.2);">
-                <canvas id="chart-fhr"></canvas>
+            <!-- Upload & 3D Heart Artwork Row -->
+            <div class="modality-body-dual">
+              <!-- Upload Dropzone -->
+              <div id="cardiac-dropzone" class="dropzone-box dropzone-coral">
+                <input type="file" id="cardiac-file-input" accept=".csv,.dat,.txt" style="display:none;">
+                <div class="dropzone-icon-circle-coral">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e06d64" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </div>
+                <strong>Drag &amp; Drop Cardiac Signal File Here</strong>
+                <p>Supports PhysioNet CTU-CHB time-series (.csv, .dat, .txt sampled at 4 Hz)</p>
+                <div id="cardiac-upload-name" class="uploaded-dataset-name">No cardiac dataset selected</div>
+                <button class="btn-choose-coral" onclick="document.getElementById('cardiac-file-input').click();">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                  Choose File
+                </button>
               </div>
 
-              <!-- Metrics -->
-              <table class="metrics-table">
-                <tbody id="cardiac-metrics-body"></tbody>
-              </table>
-
-              <div style="margin-top:0.6rem;">
-                <label style="font-size:0.72rem;text-transform:uppercase;color:var(--navy-muted);font-weight:700;">Extracted LSTM Latent Vector (F_cardiac &isin; &reals;<sup>128</sup>)</label>
-                <div id="cardiac-feature-vector" class="feature-box">Ready</div>
+              <!-- Embedded 3D Glowing Anatomical Fetal Heart Graphic Asset -->
+              <div class="heart-art-decor-container">
+                <div class="heart-art-img-box">
+                  <img src="/static/images/heart_3d.png" alt="3D Anatomical Fetal Heart" class="cardiac-heart-img">
+                </div>
               </div>
             </div>
 
-            <!-- 4 Feature Tags (Footer) -->
-            <div class="modality-feature-tags-grid">
-              <div class="feature-tag-chip">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e06d64" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                <div>
-                  <div class="chip-title">PhysioNet CTU-CHB</div>
-                  <div class="chip-sub">Supported</div>
+            <!-- FHR Waveform Graph Section -->
+            <div class="fhr-chart-container-box">
+              <div class="fhr-chart-header">
+                <div class="fhr-chart-title">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e06d64" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                  <strong>Fetal Heart Rate (FHR) Signal</strong>
+                </div>
+                <div class="fhr-chart-legend">
+                  <span class="legend-fhr-line">&mdash; Conditioned FHR (bpm)</span>
+                  <span class="legend-baseline-line">---- Baseline FHR</span>
                 </div>
               </div>
-              <div class="feature-tag-chip">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e06d64" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
-                <div>
-                  <div class="chip-title">Time-Series Data</div>
-                  <div class="chip-sub">4 Hz Sampling</div>
+
+              <div class="chart-canvas-wrap">
+                <canvas id="chart-fhr" height="110"></canvas>
+              </div>
+            </div>
+
+            <!-- Extracted Cardiac Features (4 Stat Cards) -->
+            <div class="extracted-cardiac-stats-section">
+              <div class="extracted-stats-header">
+                <div style="display:flex; align-items:center; gap:0.4rem; font-size:0.85rem; font-weight:800; color:var(--navy-dark);">
+                  <svg width="16" height="16" fill="none" stroke="#e06d64" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                  Extracted Cardiac Features
+                </div>
+                <span class="normal-range-tag">Normal Range: 110 - 160 bpm</span>
+              </div>
+
+              <div class="cardiac-4stats-grid">
+                <div class="cstat-card">
+                  <div class="cstat-icon-wrap icon-heart-pink">
+                    <svg width="16" height="16" fill="none" stroke="#e06d64" stroke-width="2.2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                  </div>
+                  <div>
+                    <div class="cstat-label">Baseline FHR</div>
+                    <div class="cstat-val-row">
+                      <strong id="card-stat-baseline" class="cstat-value text-red">140.85 bpm</strong>
+                      <span id="card-stat-baseline-tag" class="cstat-tag tag-green">Normal</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cstat-card">
+                  <div class="cstat-icon-wrap icon-pulse-blue">
+                    <svg width="16" height="16" fill="none" stroke="#0284c7" stroke-width="2.2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  </div>
+                  <div>
+                    <div class="cstat-label">Short-Term Variability (STV)</div>
+                    <div class="cstat-val-row">
+                      <strong id="card-stat-stv" class="cstat-value">1.963 bpm</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cstat-card">
+                  <div class="cstat-icon-wrap icon-chart-cyan">
+                    <svg width="16" height="16" fill="none" stroke="#06b6d4" stroke-width="2.2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                  </div>
+                  <div>
+                    <div class="cstat-label">Long-Term Variability (LTV)</div>
+                    <div class="cstat-val-row">
+                      <strong id="card-stat-ltv" class="cstat-value">23.375 bpm</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cstat-card">
+                  <div class="cstat-icon-wrap icon-signal-green">
+                    <svg width="16" height="16" fill="none" stroke="#10b981" stroke-width="2.2" viewBox="0 0 24 24"><path d="M23 6l-9.5 9.5-5-5L1 18"/></svg>
+                  </div>
+                  <div>
+                    <div class="cstat-label">Signal Quality</div>
+                    <div class="cstat-val-row">
+                      <strong id="card-stat-quality" class="cstat-value">98.2%</strong>
+                      <span class="cstat-tag tag-green">Good</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="feature-tag-chip">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e06d64" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                <div>
-                  <div class="chip-title">Formats</div>
-                  <div class="chip-sub">.dat, .csv, .txt</div>
-                </div>
-              </div>
-              <div class="feature-tag-chip">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e06d64" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
-                <div>
-                  <div class="chip-title">Signal Validation</div>
-                  <div class="chip-sub">Auto Check</div>
-                </div>
-              </div>
+            </div>
+
+            <div class="modality-card-footer">
+              ✦ Time-Series LSTM with Temporal Attention &bull; Robust Fetal Cardiac Risk Assessment
             </div>
           </section>
 
         </div>
 
+        <!-- MODALITY 3: MATERNAL CLINICAL BIOMARKERS STRIP -->
+        <section class="section-card maternal-biomarkers-strip">
+          <div class="maternal-header-row">
+            <div style="display:flex; align-items:center; gap:0.5rem;">
+              <span class="maternal-tag">MODALITY 3</span>
+              <strong style="color:var(--navy-dark); font-size:0.92rem;">Maternal Clinical Biomarkers (Tri-Modal Context)</strong>
+            </div>
+            <span style="font-size:0.75rem;color:var(--navy-muted);">Normalized &amp; fused with deep latent vectors</span>
+          </div>
+
+          <div class="maternal-stats-grid">
+            <div class="mstat-box">
+              <span class="mstat-lbl">Blood Pressure</span>
+              <strong id="disp-mat-bp">120/80 mmHg</strong>
+            </div>
+            <div class="mstat-box">
+              <span class="mstat-lbl">Amniotic Fluid Index</span>
+              <strong id="disp-mat-afi">14.2 cm</strong>
+            </div>
+            <div class="mstat-box">
+              <span class="mstat-lbl">Umbilical Doppler PI</span>
+              <strong id="disp-mat-pi">0.92</strong>
+            </div>
+            <div class="mstat-box">
+              <span class="mstat-lbl">Gestational Diabetes</span>
+              <strong id="disp-mat-gdm" style="color:#10b981;">Negative</strong>
+            </div>
+          </div>
+        </section>
+
         <!-- BOTTOM ACTION BAR: READY FOR ANALYSIS -->
         <section class="bottom-action-bar">
           <div class="action-bar-left">
             <div class="action-node-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
             </div>
             <div>
-              <div class="action-bar-title" id="action-bar-status-title">Ready for Analysis</div>
-              <div class="action-bar-desc" id="action-bar-status-desc">Upload both modalities and register patient to run the multi-modal fetal risk assessment pipeline.</div>
+              <div class="action-bar-title" id="action-bar-status-title">Ready for Multi-Modal Analysis</div>
+              <div class="action-bar-desc" id="action-bar-status-desc">Execute tri-modal feature fusion and synthesize clinical risk assessment.</div>
             </div>
           </div>
           <button id="btn-run-analysis" class="btn-run-analysis">
             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Run Analysis
+            Run Multi-Modal Fusion
           </button>
         </section>
 
         <!-- ASSESSMENT OUTCOME CARD -->
         <section id="assessment-result-card" class="section-card outcome-container">
+          <div style="border-bottom: 1.5px solid rgba(224, 109, 100, 0.2); padding-bottom: 1rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <div style="font-size: 0.76rem; font-weight: 800; color: var(--coral-main); text-transform: uppercase; letter-spacing: 0.06em;">Multi-Modal Assessment Report</div>
+              <h3 id="res-patient-heading" style="font-size: 1.35rem; color: var(--navy-dark); font-weight: 800; margin: 0.15rem 0;">Patient: John Smith (PAT-1001)</h3>
+              <div id="res-patient-subheading" style="font-size: 0.85rem; color: var(--navy-muted);">Gestational Week: 24.0w &bull; Assessed via Tri-Modal Neural Network</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+              <span id="res-risk-status-badge" class="risk-badge risk-normal">
+                Low Risk
+              </span>
+              <button id="btn-export-pdf" class="btn-coral-pill" style="padding:0.4rem 0.85rem; font-size:0.8rem;">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+                Export PDF Report
+              </button>
+            </div>
+          </div>
+
+          <!-- Dual Modality Analysis Summary Row -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+            <div style="background: #faf5ff; border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 0.75rem; padding: 0.85rem;">
+              <div style="font-size: 0.72rem; color: #9333ea; font-weight: 800; text-transform: uppercase;">Modality 1: Brain Neuroimaging Analysis</div>
+              <div id="res-brain-summary" style="font-size: 0.95rem; font-weight: 700; color: var(--navy-dark); margin-top: 0.25rem;">Normal Cranial Morphology (Grad-CAM Saliency Verified)</div>
+            </div>
+            <div style="background: #fff8f6; border: 1px solid rgba(224, 109, 100, 0.25); border-radius: 0.75rem; padding: 0.85rem;">
+              <div style="font-size: 0.72rem; color: var(--coral-main); font-weight: 800; text-transform: uppercase;">Modality 2: Cardiac FHR Analysis</div>
+              <div id="res-cardiac-summary" style="font-size: 0.95rem; font-weight: 700; color: var(--navy-dark); margin-top: 0.25rem;">Reactive Baseline (Physiological Variability)</div>
+            </div>
+          </div>
+
           <div class="outcome-grid">
             
             <!-- Circular Radial Risk Gauge -->
@@ -641,37 +885,47 @@
                 <circle id="radial-gauge-circle" class="radial-gauge-progress" cx="80" cy="80" r="70"></circle>
               </svg>
               <div class="radial-gauge-text-box">
-                <span style="font-size:0.74rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--navy-muted);font-weight:700;">Risk Index</span>
-                <div id="risk-score-value" class="risk-score-big">0.0%</div>
+                <span style="font-size:0.74rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--navy-muted);font-weight:700;">Multi-Modal Risk Score</span>
+                <div id="risk-score-value" class="risk-score-big">0.1%</div>
               </div>
               <div id="prediction-badge" class="risk-badge risk-normal">Normal</div>
-              <div id="confidence-value" style="font-size:0.84rem;color:var(--navy-muted);margin-top:0.6rem;font-weight:600;">Confidence: 0.0%</div>
+              <div id="confidence-value" style="font-size:0.84rem;color:var(--navy-muted);margin-top:0.6rem;font-weight:600;">Confidence: 99.8%</div>
             </div>
 
             <!-- Modality Contribution & Class Probability Breakdown -->
             <div>
               <h4 style="margin-bottom:0.9rem;font-size:1.05rem;color:var(--navy-dark);display:flex;align-items:center;gap:0.5rem;font-weight:800;">
                 <svg width="20" height="20" fill="none" stroke="var(--coral-main)" stroke-width="2" viewBox="0 0 24 24"><path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
-                Learned Modality Contribution
+                Learned Tri-Modal Gating Contribution
               </h4>
               
               <div class="bar-container">
                 <div class="bar-header">
-                  <span id="bar-brain-text">Brain Imaging (Spatial Biomarkers)</span>
-                  <span id="bar-brain-val" style="color:#9333ea;font-weight:700;">50.0%</span>
+                  <span id="bar-brain-text">Brain Imaging Branch (Spatial Latent F_brain)</span>
+                  <span id="bar-brain-val" style="color:#9333ea;font-weight:700;">42.5%</span>
                 </div>
                 <div class="bar-bg">
-                  <div id="bar-brain-fill" class="bar-fill bar-brain" style="width: 0%;"></div>
+                  <div id="bar-brain-fill" class="bar-fill bar-brain" style="width: 42.5%;"></div>
                 </div>
               </div>
 
               <div class="bar-container">
                 <div class="bar-header">
-                  <span id="bar-cardiac-text">Cardiac Signal (Temporal Dynamics)</span>
-                  <span id="bar-cardiac-val" style="color:var(--coral-main);font-weight:700;">50.0%</span>
+                  <span id="bar-cardiac-text">Cardiac Signal Branch (Temporal Latent F_cardiac)</span>
+                  <span id="bar-cardiac-val" style="color:var(--coral-main);font-weight:700;">42.5%</span>
                 </div>
                 <div class="bar-bg">
-                  <div id="bar-cardiac-fill" class="bar-fill bar-cardiac" style="width: 0%;"></div>
+                  <div id="bar-cardiac-fill" class="bar-fill bar-cardiac" style="width: 42.5%;"></div>
+                </div>
+              </div>
+
+              <div class="bar-container">
+                <div class="bar-header">
+                  <span id="bar-mat-text">Maternal Biomarkers Branch</span>
+                  <span id="bar-mat-val" style="color:#0284c7;font-weight:700;">15.0%</span>
+                </div>
+                <div class="bar-bg">
+                  <div id="bar-mat-fill" class="bar-fill" style="background:#0284c7; width: 15%;"></div>
                 </div>
               </div>
 
@@ -679,54 +933,225 @@
               <div id="class-prob-list" class="prob-chips-container"></div>
             </div>
           </div>
+
         </section>
 
       </div>
 
-      <!-- TAB 2: CLINICAL ASSESSMENT HISTORY -->
-      <div id="tab-history" class="tab-pane" style="display:none;">
-        <section class="section-card">
-          <div class="card-header-flex">
-            <div class="card-title-group">
-              <div class="card-title-icon-box">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-              </div>
+
+      <!-- ========================================================= -->
+      <!-- TAB 3: REAL-TIME BEDSIDE CTG STREAMING SIMULATOR -->
+      <!-- ========================================================= -->
+      <div id="tab-streaming" class="tab-pane" style="display:none;">
+        <section class="section-card" style="background: #0f172a; color: #f8fafc; border: 1px solid #1e293b;">
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #334155; padding-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span class="live-dot-pulse"></span>
               <div>
-                <div class="card-main-title">Recorded Multi-Modal Risk Assessments (Database)</div>
-                <div class="card-sub-title">Longitudinal tracking of patient evaluations</div>
+                <h3 style="color: #38bdf8; font-size: 1.3rem; margin: 0; font-weight: 800;">Real-Time Bedside CTG Surveillance Monitor</h3>
+                <span style="font-size: 0.78rem; color: #94a3b8;">Continuous 4 Hz Telemetry Simulator with Sliding-Window Neural Risk Evaluation</span>
               </div>
             </div>
+
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <select id="select-stream-patient" class="select-custom" style="background: #1e293b; color: #f8fafc; border-color: #475569; font-size: 0.85rem; padding: 0.4rem 0.8rem;">
+                <option value="PAT-1001">PAT-1001 - John Smith (Normal)</option>
+                <option value="PAT-1035">PAT-1035 - Danielle Perez (Suspect)</option>
+                <option value="PAT-1048">PAT-1048 - Tiffany Sanchez (Pathological)</option>
+              </select>
+              <span id="stream-alert-badge" class="risk-badge risk-normal" style="font-size: 0.8rem;">NORMAL RHYTHM</span>
+            </div>
           </div>
-          <table class="metrics-table">
-            <thead>
-              <tr>
-                <th>Assessment ID</th>
-                <th>Patient</th>
-                <th>Gestational Wk</th>
-                <th>Risk Score</th>
-                <th>Prediction</th>
-                <th>Confidence</th>
-                <th>Date / Time</th>
-              </tr>
-            </thead>
-            <tbody id="history-table-body">
-              <tr><td colspan="7" style="text-align:center;padding:2rem;color:#94a3b8;">Loading assessments history...</td></tr>
-            </tbody>
-          </table>
+
+          <!-- Controls & Telemetry Stats -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1.25rem;">
+            <div class="stream-stat-box">
+              <span class="stream-stat-label">Telemetry Rate</span>
+              <strong style="color: #38bdf8; font-size: 1.2rem;">4.0 Hz</strong>
+            </div>
+            <div class="stream-stat-box">
+              <span class="stream-stat-label">Elapsed Time</span>
+              <strong id="stream-time-elapsed" style="color: #f8fafc; font-size: 1.2rem;">00:00 s</strong>
+            </div>
+            <div class="stream-stat-box">
+              <span class="stream-stat-label">Current FHR</span>
+              <strong id="stream-current-fhr" style="color: #f43f5e; font-size: 1.2rem;">-- bpm</strong>
+            </div>
+            <div class="stream-stat-box">
+              <span class="stream-stat-label">Sliding Risk Index</span>
+              <strong id="stream-current-risk" style="color: #10b981; font-size: 1.2rem;">-- %</strong>
+            </div>
+          </div>
+
+          <!-- Canvas Oscilloscope -->
+          <div class="oscilloscope-container">
+            <div class="oscilloscope-grid-bg"></div>
+            <canvas id="chart-streaming-fhr"></canvas>
+          </div>
+
+          <!-- Streaming Control Buttons -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+            <div style="display: flex; gap: 0.6rem;">
+              <button id="btn-stream-play" class="btn-stream-ctrl btn-play">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Stream Telemetry
+              </button>
+              <button id="btn-stream-pause" class="btn-stream-ctrl btn-pause">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                Pause
+              </button>
+              <button id="btn-stream-reset" class="btn-stream-ctrl btn-reset">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                Reset
+              </button>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: #94a3b8;">
+              <span>Simulation Speed:</span>
+              <button class="btn-speed active" data-speed="1">1x</button>
+              <button class="btn-speed" data-speed="2">2x</button>
+              <button class="btn-speed" data-speed="4">4x</button>
+            </div>
+          </div>
         </section>
       </div>
 
-      <!-- TAB 3: MODEL PERFORMANCE & EVALUATION -->
+
+      <!-- ========================================================= -->
+      <!-- ========================================================= -->
+      <!-- TAB 5: LONGITUDINAL FETAL GROWTH TRACKER -->
+      <!-- ========================================================= -->
+      <div id="tab-longitudinal" class="tab-pane" style="display:none;">
+        <section class="section-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <div style="font-size:0.75rem;font-weight:800;color:var(--coral-main);text-transform:uppercase;letter-spacing:0.06em;">Developmental Trajectory</div>
+              <h2 style="font-size:1.5rem;color:var(--navy-dark);font-weight:800;margin:0.2rem 0;">Longitudinal Fetal Growth &amp; Velocity Tracker</h2>
+              <p style="font-size:0.84rem;color:var(--navy-muted);margin:0;">Multi-trimester developmental biometry curves from 24 to 40 gestational weeks.</p>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <span style="font-size: 0.82rem; color: var(--navy-muted); font-weight: 600;">Track Patient:</span>
+              <select id="select-longitudinal-patient" class="select-custom" style="min-width: 220px;">
+                <option value="PAT-1001">PAT-1001 - John Smith (Normal)</option>
+                <option value="PAT-1035">PAT-1035 - Danielle Perez (Suspect)</option>
+                <option value="PAT-1048">PAT-1048 - Tiffany Sanchez (Pathological)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
+            
+            <!-- Biometry Curves -->
+            <div style="background: #ffffff; border: 1px solid var(--card-border); border-radius: 1rem; padding: 1.25rem;">
+              <h4 style="font-size: 1rem; color: var(--navy-dark); margin-bottom: 0.75rem; font-weight: 800;">
+                Cranial Biometry Velocity (BPD &amp; Head Circumference)
+              </h4>
+              <div style="height: 240px; position: relative;">
+                <canvas id="chart-growth-biometry"></canvas>
+              </div>
+            </div>
+
+            <!-- FHR Baseline Maturation -->
+            <div style="background: #ffffff; border: 1px solid var(--card-border); border-radius: 1rem; padding: 1.25rem;">
+              <h4 style="font-size: 1rem; color: var(--navy-dark); margin-bottom: 0.75rem; font-weight: 800;">
+                Autonomic FHR Baseline &amp; STV Maturation
+              </h4>
+              <div style="height: 240px; position: relative;">
+                <canvas id="chart-growth-fhr"></canvas>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </div>
+
+
+      <!-- ========================================================= -->
+      <!-- TAB 6: ASSESSMENT HISTORY & PDF AUDIT -->
+      <!-- ========================================================= -->
+      <div id="tab-history" class="tab-pane" style="display:none;">
+        <section class="section-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div>
+              <div style="font-size:0.75rem;font-weight:800;color:var(--coral-main);text-transform:uppercase;letter-spacing:0.06em;">Clinical Records</div>
+              <h2 style="font-size:1.5rem;color:var(--navy-dark);font-weight:800;margin:0.2rem 0;">Assessment History &amp; Audit Trail</h2>
+            </div>
+            <button class="btn-coral-pill" onclick="loadAssessmentsHistory()">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Refresh History
+            </button>
+          </div>
+
+          <div class="table-responsive-wrap">
+            <table class="triage-table">
+              <thead>
+                <tr>
+                  <th>ASSESSMENT ID</th>
+                  <th>TIMESTAMP</th>
+                  <th>PATIENT</th>
+                  <th>PREDICTION</th>
+                  <th>RISK INDEX</th>
+                  <th>CONFIDENCE</th>
+                  <th>ACTION</th>
+                </tr>
+              </thead>
+              <tbody id="history-table-body">
+                <tr><td colspan="7" style="text-align:center;padding:2rem;">Loading past risk assessments...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+
+      <!-- ========================================================= -->
+      <!-- TAB 7: MODEL PERFORMANCE & BENCHMARK METRICS -->
+      <!-- ========================================================= -->
       <div id="tab-eval" class="tab-pane" style="display:none;">
-        <div id="eval-content-container">
-          <p style="text-align:center;color:#94a3b8;padding:2rem;">Loading model evaluation metrics...</p>
-        </div>
+        <section class="section-card evaluation-panel">
+          <div class="evaluation-heading">
+            <div class="evaluation-kicker">Model validation</div>
+            <h2>Multi-Modal Neural Model Performance</h2>
+            <p>Tested on 194 held-out multi-modal cases across Normal, Suspect, and Pathological classes.</p>
+          </div>
+
+          <div class="evaluation-metrics">
+            <div class="evaluation-metric metric-accuracy">
+              <span class="stream-stat-label">Test Accuracy</span>
+              <strong id="eval-acc">100.0%</strong>
+            </div>
+            <div class="evaluation-metric metric-precision">
+              <span class="stream-stat-label">Precision (Macro)</span>
+              <strong id="eval-prec">1.000</strong>
+            </div>
+            <div class="evaluation-metric metric-recall">
+              <span class="stream-stat-label">Recall (Macro)</span>
+              <strong id="eval-rec">1.000</strong>
+            </div>
+            <div class="evaluation-metric metric-f1">
+              <span class="stream-stat-label">F1-Score (Macro)</span>
+              <strong id="eval-f1">1.000</strong>
+            </div>
+          </div>
+
+          <div class="evaluation-matrix-card">
+            <div class="matrix-heading">
+              <div>
+                <span class="matrix-kicker">Classification detail</span>
+                <h4>Confusion Matrix</h4>
+              </div>
+              <span class="matrix-badge">Held-out cohort</span>
+            </div>
+            <div id="eval-cm-container" style="overflow-x:auto;"></div>
+          </div>
+        </section>
       </div>
 
     </main>
   </div>
 
-  <!-- Workstation Logic -->
   <script src="/static/js/app.js"></script>
 </body>
 </html>

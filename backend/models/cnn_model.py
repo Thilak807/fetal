@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -73,6 +74,61 @@ class FetalBrainCNN(nn.Module):
         # Spatial feature vector F_brain: (B, feature_dim)
         f_brain = self.feature_projector(x)
         return f_brain
+
+    def generate_gradcam(self, x, target_class=None):
+        """
+        Computes Grad-CAM (Gradient-weighted Class Activation Mapping) saliency map
+        from the final convolutional layer (conv4) to visually explain spatial focus.
+        Args:
+            x: Tensor of shape (1, 1, H, W)
+            target_class: int or None (defaults to highest logit class)
+        Returns:
+            heatmap_np: np.ndarray of shape (H, W) in range [0, 1]
+        """
+        self.eval()
+        x = x.clone().detach().requires_grad_(True)
+        
+        # Forward pass tracking activations
+        c1 = F.relu(self.bn1(self.conv1(x)))
+        p1 = self.pool(c1)
+        c2 = F.relu(self.bn2(self.conv2(p1)))
+        p2 = self.pool(c2)
+        c3 = F.relu(self.bn3(self.conv3(p2)))
+        p3 = self.pool(c3)
+        c4 = F.relu(self.bn4(self.conv4(p3)))
+        features = c4
+        features.retain_grad()
+        
+        pooled = self.global_pool(features)
+        flat = torch.flatten(pooled, 1)
+        f_brain = self.feature_projector(flat)
+        logits = self.classifier(f_brain)
+        
+        if target_class is None:
+            target_class = torch.argmax(logits, dim=1).item()
+            
+        # Backward pass for target score
+        score = logits[0, target_class]
+        self.zero_grad()
+        score.backward(retain_graph=True)
+        
+        # Compute gradient weights
+        grads = features.grad
+        weights = torch.mean(grads, dim=(2, 3), keepdim=True)
+        
+        # Weighted combination of feature maps
+        cam = torch.sum(weights * features, dim=1, keepdim=True)
+        cam = F.relu(cam)
+        cam = F.interpolate(cam, size=(x.shape[2], x.shape[3]), mode='bilinear', align_corners=False)
+        
+        cam_np = cam.squeeze().detach().cpu().numpy()
+        cam_min, cam_max = cam_np.min(), cam_np.max()
+        if cam_max > cam_min:
+            cam_np = (cam_np - cam_min) / (cam_max - cam_min + 1e-8)
+        else:
+            cam_np = np.zeros_like(cam_np)
+            
+        return cam_np
 
     def forward(self, x):
         """Standard feedforward returning class logits."""

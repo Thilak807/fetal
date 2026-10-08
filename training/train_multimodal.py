@@ -1,10 +1,13 @@
 import os
 import sys
+import json
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import numpy as np
 import pandas as pd
+from PIL import Image
+from scipy import ndimage
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -13,8 +16,13 @@ from sklearn.model_selection import train_test_split
 
 from backend.config import Config
 from backend.models.fusion_model import MultiModalFusionModel
+from backend.preprocessing.brain_preprocessing import BrainPreprocessor
 from backend.preprocessing.cardiac_preprocessing import CardiacPreprocessor
-from backend.atlas.deformable_registration import get_default_atlas_template, generate_synthetic_fetal_brain_template
+from backend.atlas.deformable_registration import (
+    get_default_atlas_template,
+    generate_synthetic_fetal_brain_template,
+    ElasticDeformableRegistrar,
+)
 
 class MultiModalFetalDataset(Dataset):
     """
@@ -32,58 +40,109 @@ class MultiModalFetalDataset(Dataset):
     def __getitem__(self, idx):
         return self.brain_images[idx], self.cardiac_sequences[idx], self.labels[idx]
 
+
 def load_fetal_training_data():
     """
-    Constructs multi-modal training pairs using authentic CTU-CHB cardiac records
-    and tabulated fetal health labels.
+    Constructs multi-modal training pairs directly from the 50 synthetic patient profiles,
+    matched atlas-mapped brain scans, cardiac signals, and Tabulated CTG distributions.
     """
     base_dir = Config.BASE_DIR
     template = get_default_atlas_template(Config.ATLAS_TEMPLATES_DIR, size=Config.IMAGE_TARGET_SIZE)
-    preprocessor = CardiacPreprocessor(window_len=Config.CARDIAC_WINDOW_LEN)
-
-    # Load tabulated dataset to get true statistical distributions
-    tab_csv = base_dir / "fetal-health-classification-main" / "TabulatedCTG" / "fetal_health.csv"
-    if not tab_csv.exists():
-        tab_csv = base_dir / "TabulatedCTG" / "fetal_health.csv"
+    brain_prep = BrainPreprocessor(target_size=Config.IMAGE_TARGET_SIZE)
+    registrar = ElasticDeformableRegistrar()
+    cardiac_prep = CardiacPreprocessor(
+        sampling_rate=Config.CARDIAC_SAMPLING_RATE,
+        window_len=Config.CARDIAC_WINDOW_LEN
+    )
 
     brain_list = []
     cardiac_list = []
     label_list = []
 
-    # Read CTU-CHB extracted cardiac signals
-    sample_signals_dir = Config.SAMPLE_DATA_DIR / "cardiac_signals"
-    sig_files = list(sample_signals_dir.glob("*.csv"))
+    # 1. Load from the 50 Synthetic Patient Cases
+    patients_csv = Config.SAMPLE_DATA_DIR / "patients.csv"
+    if patients_csv.exists():
+        df_patients = pd.read_csv(patients_csv)
+        print(f"[DATA] Found {len(df_patients)} synthetic patient profiles in {patients_csv}")
+
+        label_map = {"Normal": 0, "Suspect": 1, "Pathological": 2}
+
+        for _, row in df_patients.iterrows():
+            pat_id = row["patient_id"]
+            expected_cat = row.get("expected_demo_result", "Normal")
+            lbl = label_map.get(expected_cat, 0)
+
+            # Load and preprocess brain image
+            brain_file = Config.SAMPLE_DATA_DIR / "brain_scans" / row["brain_scan_filename"]
+            if brain_file.exists():
+                raw_img = brain_prep.load_image(str(brain_file))
+                prep_img, _ = brain_prep.preprocess(raw_img)
+                mapped_img, _, _ = registrar.register(prep_img, template)
+            else:
+                mapped_img = template.copy()
+
+            # Load and preprocess cardiac signal
+            cardiac_file = Config.SAMPLE_DATA_DIR / "cardiac_signals" / row["cardiac_signal_filename"]
+            if cardiac_file.exists():
+                raw_sig = cardiac_prep.load_signal(str(cardiac_file))
+                proc_sig, _ = cardiac_prep.preprocess(raw_sig)
+                seqs = cardiac_prep.prepare_sequences(proc_sig, window_len=Config.CARDIAC_WINDOW_LEN)
+            else:
+                proc_sig = np.full(Config.CARDIAC_WINDOW_LEN, 135.0)
+                seqs = cardiac_prep.prepare_sequences(proc_sig, window_len=Config.CARDIAC_WINDOW_LEN)
+
+            # Data Augmentation per patient:
+            # Pair each temporal sequence window with atlas-mapped image variations
+            for seq in seqs:
+                # Base pair
+                brain_list.append(mapped_img)
+                cardiac_list.append(seq)
+                label_list.append(lbl)
+
+                # Augmented rotation / jitter
+                for angle in [-2.5, 2.5]:
+                    rot_img = ndimage.rotate(mapped_img, angle=angle, reshape=False, mode='nearest')
+                    rot_img = np.clip(rot_img, 0.0, 1.0)
+                    brain_list.append(rot_img)
+                    cardiac_list.append(seq)
+                    label_list.append(lbl)
+
+    # 2. Augment with Tabulated CTG + Physiological Brain Patterns for broad generalization
+    tab_csv = base_dir / "fetal-health-classification-main" / "TabulatedCTG" / "fetal_health.csv"
+    if not tab_csv.exists():
+        tab_csv = base_dir / "TabulatedCTG" / "fetal_health.csv"
 
     if tab_csv.exists():
         df_tab = pd.read_csv(tab_csv)
-        # Sample representative subsets across the 3 classes: Normal (1), Suspect (2), Pathological (3)
-        # Map 1, 2, 3 -> 0, 1, 2
         df_tab["label"] = df_tab["fetal_health"].astype(int) - 1
         
-        # Take a balanced sample of 300 instances for reliable prototyping
         sample_df = df_tab.groupby("label", group_keys=False).apply(
-            lambda x: x.sample(min(len(x), 100), random_state=42)
+            lambda x: x.sample(min(len(x), 80), random_state=42)
         ).reset_index(drop=True)
 
-        for idx, row in sample_df.iterrows():
+        for _, row in sample_df.iterrows():
             lbl = int(row["label"])
-            baseline = float(row.get("baseline value", 130.0))
+            baseline = float(row.get("baseline value", 135.0))
             stv = float(row.get("mean_value_of_short_term_variability", 1.5))
             
-            # Synthesize representative sequence based on genuine patient CTG parameters
+            # Generate physiologically calibrated sequence matching label
             t = np.linspace(0, 30, Config.CARDIAC_WINDOW_LEN)
-            fhr = baseline + stv * np.sin(2 * np.pi * 0.1 * t) + np.random.normal(0, stv * 0.5, len(t))
-            seq = preprocessor.prepare_sequences(fhr, window_len=Config.CARDIAC_WINDOW_LEN)[0]
+            if lbl == 0:
+                fhr = baseline + stv * 1.5 * np.sin(2 * np.pi * 0.04 * t) + np.random.normal(0, 1.2, len(t))
+                fhr += 15.0 * np.exp(-((t - 15.0) ** 2) / (2 * 4.0 ** 2)) # Acceleration
+                b_slice = template.copy()
+            elif lbl == 1:
+                fhr = baseline + stv * 0.8 * np.sin(2 * np.pi * 0.03 * t) + np.random.normal(0, 0.9, len(t))
+                b_slice = ndimage.rotate(template, angle=4.0, reshape=False, mode='nearest')
+            else:
+                fhr = baseline + stv * 0.5 * np.sin(2 * np.pi * 0.02 * t) + np.random.normal(0, 0.6, len(t))
+                fhr -= 25.0 * np.exp(-((t - 15.0) ** 2) / (2 * 5.0 ** 2)) # Deceleration
+                b_slice = ndimage.rotate(template, angle=6.0, reshape=False, mode='nearest')
+                b_slice[(b_slice > 0.1) & (b_slice < 0.25)] = 0.12
+
+            seq = cardiac_prep.prepare_sequences(fhr, window_len=Config.CARDIAC_WINDOW_LEN)[0]
             
-            # Synthesize corresponding brain slice with physiological variations
-            # Pathological fetuses often exhibit mild ventriculomegaly or cranial asymmetry
-            ventricle_scale = 1.0 + (0.2 * lbl)
-            brain_slice = generate_synthetic_fetal_brain_template(size=Config.IMAGE_TARGET_SIZE)
-            if lbl > 0:
-                from scipy import ndimage
-                brain_slice = ndimage.rotate(brain_slice, angle=(lbl * 2.0), reshape=False, mode='nearest')
-            
-            brain_list.append(brain_slice)
+            brain_list.append(b_slice)
             cardiac_list.append(seq)
             label_list.append(lbl)
 
@@ -93,7 +152,7 @@ def load_fetal_training_data():
         np.array(label_list, dtype=np.int64)
     )
 
-def train_multimodal_model(epochs=15, batch_size=16, lr=0.001):
+def train_multimodal_model(epochs=25, batch_size=32, lr=0.001):
     print("==================================================")
     print("Multi-Modal Fetal Risk Assessment Model Training")
     print("==================================================")
@@ -139,6 +198,7 @@ def train_multimodal_model(epochs=15, batch_size=16, lr=0.001):
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4)
+    scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs, eta_min=1e-5)
 
     best_val_loss = float("inf")
     weights_path = Config.SAVED_MODELS_DIR / "multimodal_fusion.pt"
@@ -177,6 +237,7 @@ def train_multimodal_model(epochs=15, batch_size=16, lr=0.001):
 
         val_loss /= len(val_dataset)
         val_acc = val_correct / len(val_dataset)
+        scheduler.step()
 
         print(f"Epoch {epoch:02d}/{epochs} | Train Loss: {train_loss:.4f} Acc: {train_acc:.3f} | Val Loss: {val_loss:.4f} Acc: {val_acc:.3f}")
 

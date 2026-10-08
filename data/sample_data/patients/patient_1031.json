@@ -1,0 +1,22 @@
+{
+  "patient_id": "PAT-1031",
+  "name": "Andrew Green",
+  "age": 21,
+  "maternal_age": 21,
+  "gestational_week": 27.0,
+  "gender": "Female",
+  "fetal_heart_rate": 153.6,
+  "estimated_fetal_weight_g": 1090,
+  "presentation": "Cephalic",
+  "scan_type": "MRI",
+  "brain_scan_filename": "PAT-1031_brain.png",
+  "cardiac_signal_filename": "PAT-1031_fhr.csv",
+  "expected_demo_result": "Suspect",
+  "expected_brain_analysis": "Mild Ventricle Asymmetry / Variation",
+  "expected_cardiac_analysis": "Reduced Variability / Tachycardia",
+  "risk_score": 0.44,
+  "risk_percent": 44.0,
+  "risk_status": "Requires Review",
+  "notes": "Synthetic demo profile for Andrew Green. Generated for academic AI multi-modal evaluation.",
+  "data_tag": "SYNTHETIC DEMONSTRATION DATA \u2014 NOT FOR CLINICAL USE"
+}

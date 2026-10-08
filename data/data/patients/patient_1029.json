@@ -1,0 +1,22 @@
+{
+  "patient_id": "PAT-1029",
+  "name": "Paul Hill",
+  "age": 28,
+  "maternal_age": 28,
+  "gestational_week": 36.4,
+  "gender": "Female",
+  "fetal_heart_rate": 134.9,
+  "estimated_fetal_weight_g": 2856,
+  "presentation": "Transverse",
+  "scan_type": "MRI",
+  "brain_scan_filename": "PAT-1029_brain.png",
+  "cardiac_signal_filename": "PAT-1029_fhr.csv",
+  "expected_demo_result": "Normal",
+  "expected_brain_analysis": "Normal Morphology",
+  "expected_cardiac_analysis": "Normal Reactive FHR",
+  "risk_score": 0.16,
+  "risk_percent": 16.0,
+  "risk_status": "Low Risk",
+  "notes": "Synthetic demo profile for Paul Hill. Generated for academic AI multi-modal evaluation.",
+  "data_tag": "SYNTHETIC DEMONSTRATION DATA \u2014 NOT FOR CLINICAL USE"
+}

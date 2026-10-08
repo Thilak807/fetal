@@ -1,0 +1,22 @@
+{
+  "patient_id": "PAT-1050",
+  "name": "Katherine Rogers",
+  "age": 28,
+  "maternal_age": 28,
+  "gestational_week": 25.7,
+  "gender": "Female",
+  "fetal_heart_rate": 93.9,
+  "estimated_fetal_weight_g": 955,
+  "presentation": "Cephalic",
+  "scan_type": "Ultrasound",
+  "brain_scan_filename": "PAT-1050_brain.png",
+  "cardiac_signal_filename": "PAT-1050_fhr.csv",
+  "expected_demo_result": "Pathological",
+  "expected_brain_analysis": "Pronounced Ventriculomegaly / Abnormality",
+  "expected_cardiac_analysis": "Late Decelerations / Severe Bradycardia",
+  "risk_score": 0.842,
+  "risk_percent": 84.2,
+  "risk_status": "High Risk / Acute Intervention",
+  "notes": "Synthetic demo profile for Katherine Rogers. Generated for academic AI multi-modal evaluation.",
+  "data_tag": "SYNTHETIC DEMONSTRATION DATA \u2014 NOT FOR CLINICAL USE"
+}

@@ -75,6 +75,21 @@ class BrainService:
         with torch.no_grad():
             f_brain = self.cnn_model.extract_features(tensor_in).squeeze(0).numpy()
 
+        # 7. Generate Explainable AI Grad-CAM Saliency Map
+        gradcam_filename = f"{scan_uid}_gradcam.png"
+        gradcam_path = os.path.join(Config.BRAIN_UPLOAD_FOLDER, gradcam_filename)
+        try:
+            cam_map = self.cnn_model.generate_gradcam(tensor_in)
+            import matplotlib.cm as cm
+            heatmap_rgb = cm.jet(cam_map)[:, :, :3]
+            gray_3ch = np.stack([mapped_img]*3, axis=-1)
+            blended = 0.55 * gray_3ch + 0.45 * heatmap_rgb
+            blended = np.clip(blended, 0.0, 1.0)
+            Image.fromarray((blended * 255.0).astype(np.uint8)).save(gradcam_path)
+        except Exception as e:
+            print(f"[WARN] Grad-CAM generation fallback: {e}")
+            Image.fromarray((mapped_img * 255.0).astype(np.uint8)).save(gradcam_path)
+
         feature_summary = {
             "dimension": len(f_brain),
             "mean": float(np.mean(f_brain)),
@@ -83,7 +98,7 @@ class BrainService:
             "sample_vector": [round(float(v), 4) for v in f_brain[:16]],  # Preview first 16 dims
         }
 
-        # 7. Create or update database record if patient_id is provided
+        # 8. Create or update database record if patient_id is provided
         db_record = None
         if patient_id is not None:
             db_record = BrainImage(
@@ -110,9 +125,11 @@ class BrainService:
             "preprocessed_filename": prep_filename,
             "atlas_mapped_filename": mapped_filename,
             "deformation_field_filename": deform_field_filename,
+            "gradcam_filename": gradcam_filename,
             "preprocessed_url": f"/api/brain/image/{prep_filename}",
             "atlas_mapped_url": f"/api/brain/image/{mapped_filename}",
             "deformation_field_url": f"/api/brain/image/{deform_field_filename}",
+            "gradcam_url": f"/api/brain/image/{gradcam_filename}",
             "preprocessing_metrics": prep_metrics,
             "atlas_metrics": atlas_metrics,
             "feature_summary": feature_summary,

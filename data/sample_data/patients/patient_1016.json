@@ -1,0 +1,22 @@
+{
+  "patient_id": "PAT-1016",
+  "name": "Nicole Robinson",
+  "age": 21,
+  "maternal_age": 21,
+  "gestational_week": 25.5,
+  "gender": "Female",
+  "fetal_heart_rate": 148.4,
+  "estimated_fetal_weight_g": 820,
+  "presentation": "Cephalic",
+  "scan_type": "Ultrasound",
+  "brain_scan_filename": "PAT-1016_brain.png",
+  "cardiac_signal_filename": "PAT-1016_fhr.csv",
+  "expected_demo_result": "Normal",
+  "expected_brain_analysis": "Normal Morphology",
+  "expected_cardiac_analysis": "Normal Reactive FHR",
+  "risk_score": 0.135,
+  "risk_percent": 13.5,
+  "risk_status": "Low Risk",
+  "notes": "Synthetic demo profile for Nicole Robinson. Generated for academic AI multi-modal evaluation.",
+  "data_tag": "SYNTHETIC DEMONSTRATION DATA \u2014 NOT FOR CLINICAL USE"
+}

@@ -1,0 +1,22 @@
+{
+  "patient_id": "PAT-1039",
+  "name": "Brian Roberts",
+  "age": 35,
+  "maternal_age": 35,
+  "gestational_week": 37.4,
+  "gender": "Female",
+  "fetal_heart_rate": 158.6,
+  "estimated_fetal_weight_g": 3036,
+  "presentation": "Cephalic",
+  "scan_type": "MRI",
+  "brain_scan_filename": "PAT-1039_brain.png",
+  "cardiac_signal_filename": "PAT-1039_fhr.csv",
+  "expected_demo_result": "Suspect",
+  "expected_brain_analysis": "Mild Ventricle Asymmetry / Variation",
+  "expected_cardiac_analysis": "Reduced Variability / Tachycardia",
+  "risk_score": 0.575,
+  "risk_percent": 57.5,
+  "risk_status": "Requires Review",
+  "notes": "Synthetic demo profile for Brian Roberts. Generated for academic AI multi-modal evaluation.",
+  "data_tag": "SYNTHETIC DEMONSTRATION DATA \u2014 NOT FOR CLINICAL USE"
+}

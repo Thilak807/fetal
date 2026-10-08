@@ -55,12 +55,15 @@ class CardiacService:
         # 4. Prepare normalized sequences for LSTM
         sequences = self.preprocessor.prepare_sequences(processed_signal)
 
-        # 5. Extract temporal features via LSTM
+        # 5. Extract temporal features via LSTM with attention
         seq_tensor = torch.from_numpy(sequences).float()
         with torch.no_grad():
-            f_cardiac_batch = self.lstm_model.extract_features(seq_tensor).numpy()
+            f_cardiac_batch, att_weights_batch = self.lstm_model.extract_features_with_attention(seq_tensor)
+            f_cardiac_batch = f_cardiac_batch.numpy()
+            att_weights_batch = att_weights_batch.numpy()
             # Mean-pool over all windows for the patient's global representation
             f_cardiac = np.mean(f_cardiac_batch, axis=0)
+            avg_attention = np.mean(att_weights_batch, axis=0)
 
         feature_summary = {
             "dimension": len(f_cardiac),
@@ -72,6 +75,8 @@ class CardiacService:
 
         # 6. Generate lightweight visualization points for web chart
         chart_payload = self.preprocessor.get_visualization_payload(raw_signal, processed_signal)
+        # Add attention score indicators for explainability
+        chart_payload["attention_scores"] = [round(float(a), 4) for a in np.interp(np.linspace(0, len(avg_attention)-1, len(chart_payload["time"])), np.arange(len(avg_attention)), avg_attention)]
 
         # 7. Create database record if patient_id provided
         db_record = None
@@ -100,5 +105,5 @@ class CardiacService:
             "stats": stats,
             "chart_data": chart_payload,
             "feature_summary": feature_summary,
-            "status": "Denoised & Temporal LSTM Features Extracted",
+            "status": "Denoised & Temporal Features Extracted",
         }

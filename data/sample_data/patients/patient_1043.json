@@ -1,0 +1,22 @@
+{
+  "patient_id": "PAT-1043",
+  "name": "Edward Parker",
+  "age": 21,
+  "maternal_age": 21,
+  "gestational_week": 34.6,
+  "gender": "Female",
+  "fetal_heart_rate": 166.8,
+  "estimated_fetal_weight_g": 2508,
+  "presentation": "Cephalic",
+  "scan_type": "MRI",
+  "brain_scan_filename": "PAT-1043_brain.png",
+  "cardiac_signal_filename": "PAT-1043_fhr.csv",
+  "expected_demo_result": "Pathological",
+  "expected_brain_analysis": "Pronounced Ventriculomegaly / Abnormality",
+  "expected_cardiac_analysis": "Late Decelerations / Severe Bradycardia",
+  "risk_score": 0.884,
+  "risk_percent": 88.4,
+  "risk_status": "High Risk / Acute Intervention",
+  "notes": "Synthetic demo profile for Edward Parker. Generated for academic AI multi-modal evaluation.",
+  "data_tag": "SYNTHETIC DEMONSTRATION DATA \u2014 NOT FOR CLINICAL USE"
+}

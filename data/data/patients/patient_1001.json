@@ -1,0 +1,22 @@
+{
+  "patient_id": "PAT-1001",
+  "name": "John Smith",
+  "age": 21,
+  "maternal_age": 21,
+  "gestational_week": 24.0,
+  "gender": "Female",
+  "fetal_heart_rate": 137.8,
+  "estimated_fetal_weight_g": 550,
+  "presentation": "Transverse",
+  "scan_type": "MRI",
+  "brain_scan_filename": "PAT-1001_brain.png",
+  "cardiac_signal_filename": "PAT-1001_fhr.csv",
+  "expected_demo_result": "Normal",
+  "expected_brain_analysis": "Normal Morphology",
+  "expected_cardiac_analysis": "Normal Reactive FHR",
+  "risk_score": 0.06,
+  "risk_percent": 6.0,
+  "risk_status": "Low Risk",
+  "notes": "Synthetic demo profile for John Smith. Generated for academic AI multi-modal evaluation.",
+  "data_tag": "SYNTHETIC DEMONSTRATION DATA \u2014 NOT FOR CLINICAL USE"
+}

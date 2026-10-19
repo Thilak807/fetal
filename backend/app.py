@@ -58,6 +58,10 @@ def create_app():
     def index():
         return render_template("index.html")
 
+    @app.route("/health")
+    def health():
+        return jsonify({"status": "ok"}), 200
+
     @app.route("/api/brain/image/<filename>")
     def serve_brain_image(filename):
         return send_from_directory(Config.BRAIN_UPLOAD_FOLDER, filename)
@@ -573,5 +577,7 @@ def create_app():
     return app
 
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", "5000"))
+    debug = os.environ.get("FLASK_DEBUG", "").lower() == "true"
     app = create_app()
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=debug)
